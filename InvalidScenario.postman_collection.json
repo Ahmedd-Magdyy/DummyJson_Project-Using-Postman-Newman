@@ -1,0 +1,678 @@
+{
+	"info": {
+		"_postman_id": "5d48eda9-1cee-4914-b375-5cf51becf537",
+		"name": "Invalid Scenario",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43363550"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Invalid credentials' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Invalid credentials\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"Ahmed\",\n  \"password\": \"ahmedPass\"\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Profile",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {\r",
+							"    pm.response.to.have.status(401);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is not empty\", function () {\r",
+							"    pm.expect(pm.response.text()).to.not.be.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body contains 'Invalid/Expired Token' message\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"Invalid/Expired Token!\"); \r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwtToken}}"
+					}
+				],
+				"url": {
+					"raw": "{{BASE_URL}}/auth/me",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"First name is @Ah123\", function () {",
+							"    pm.expect(pm.response.json().firstName).to.eql(\"@Ah123\");",
+							"});",
+							"pm.test(\"Last name is $Ma89\", function () {",
+							"    pm.expect(pm.response.json().lastName).to.eql(\"$Ma89\");",
+							"});",
+							"pm.test(\"ID is 209\", function () {",
+							"    pm.expect(pm.response.json().id).to.eql(209);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\" : 209 ,\n    \"firstName\": \"{{firstName}}\",\n    \"lastName\": \"{{lastName}}\",\n    \"age\": 27 , \n    \"email\": \"{{email}}\",\n    \"phone\": \"{{phone}}\",\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/users/add",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"users",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'User with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"User with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"todo\": \"Want to buy a new product\",\n    \"completed\": false,\n    \"userId\": \"{{UserId}}\"\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/todos/add",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"todos",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get A Single To Do",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Todo with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Todo with id '99999' not found\"); ",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/todos/{{TodoId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"todos",
+						"{{TodoId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Products By A Category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains total = 0\", function () {",
+							"    pm.expect(pm.response.json().total).to.eql(0); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/products/category/{{CategoryName}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"products",
+						"category",
+						"{{CategoryName}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Product with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Product with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\":\"99999\" ,\n  \"price\": 130 \n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/products/{{ProductId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"products",
+						"{{ProductId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Product with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Product with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/products/{{ProductId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"products",
+						"{{ProductId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'User with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"User with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": \"{{UserId}}\",\n    \"products\": [\n      {\n        \"id\": 150,\n        \"quantity\": 4\n      },\n      {\n        \"id\": 1,\n        \"quantity\": 1\n      }\n    ]\n  }\n\n"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/carts/add",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"carts",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Cart with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Cart with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"merge\": true, \n    \"products\": [\n      {\n        \"id\": 168,\n        \"quantity\": 1\n      }\n    ]\n}\n"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/carts/{{CartId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"carts",
+						"{{CartId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get A Single Cart",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Cart with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Cart with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/carts/{{CartId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"carts",
+						"{{CartId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add New Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'User with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"User with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"I am in love with my new product\",\n    \"userId\": 99999\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/posts/add",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"posts",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Todo with id '99999' not found' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Todo with id '99999' not found\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/todos/{{TodoId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"todos",
+						"{{TodoId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Response body is not empty\", function () {",
+							"    pm.expect(pm.response.text()).to.not.be.empty;",
+							"});",
+							"",
+							"pm.test(\"Response body contains 'Access Token is required' message\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Access Token is required\"); ",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/auth/logout1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"logout1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "patchName",
+			"value": ""
+		},
+		{
+			"key": "patchLastName",
+			"value": ""
+		}
+	]
+}
